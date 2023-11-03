@@ -1,5 +1,6 @@
 #!/bin/bash
 
 echo "Hello $1 / $2"
-output=$(date)
-echo "output=$output" >> $GITHUB_OUTPUT
+# gh issue view https://whatever
+gh "$2" view "$1"
+echo "Tell me a short story about a turtle" | chatgpt-cli >> $GITHUB_OUTPUT

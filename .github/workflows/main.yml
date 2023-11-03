@@ -12,6 +12,8 @@ jobs:
       - name: Hello world action step
         uses: ./ # Uses an action in the root directory
         id: hello
+        env:
+            OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         with:
           url: https://github.com/grafana/grafana/issues/77598
           type: issue
