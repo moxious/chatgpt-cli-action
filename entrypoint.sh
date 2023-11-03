@@ -6,7 +6,7 @@ PROMPT=$3
 echo "Hello $1 / $2"
 
 # gh issue view https://whatever
-gh "$2" view "$1" | tee github-context.txt
+gh "$TYPE" view "$URL" | tee github-context.txt
 
 echo $PROMPT > context.txt
 
