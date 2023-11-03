@@ -1,5 +1,8 @@
 # chatgpt-cli-action
 
+This is a GitHub action based on [https://github.com/marcolardera/chatgpt-cli](chatgpt-cli) that allows
+for easy GitHub actions application of ChatGPT to GitHub objects such as issues.
+
 ```
 docker build -t moxious/chatgpt-cli-action . && docker push moxious/chatgpt-cli-action
 ```
