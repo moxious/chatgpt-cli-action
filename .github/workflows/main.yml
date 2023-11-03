@@ -14,6 +14,7 @@ jobs:
         id: hello
         env:
             OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+            GH_TOKEN: ${{ secrets.TOKEN }}
         with:
           url: https://github.com/grafana/grafana/issues/77598
           type: issue
