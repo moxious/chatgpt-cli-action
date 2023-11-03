@@ -18,7 +18,11 @@ jobs:
         with:
           url: https://github.com/grafana/grafana/issues/77598
           type: issue
-          prompt: summarize the issue, be extremely brief.  Begin by giving no more than 3 keywords that describe the issue.
+          prompt: "
+            Summarize the issue, be extremely brief. Format your output by saying:
+
+            KEYWORDS: (no more than 3)
+            SUMMARY: (no more than one paragraph"          
       # Use the output from the `hello` step
       - name: Get the output 
         run: echo "Result was ${{ steps.hello.outputs.output }}"
