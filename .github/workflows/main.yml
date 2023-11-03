@@ -18,6 +18,7 @@ jobs:
         with:
           url: https://github.com/grafana/grafana/issues/77598
           type: issue
+          prompt: summarize the entire input text into no more than 5 keywords, then please assess whether the issue is a question, bug report, or security issue.
       # Use the output from the `hello` step
       - name: Get the output 
         run: echo "Result was ${{ steps.hello.outputs.output }}"

@@ -7,6 +7,9 @@ inputs:
   url:  # id of input
     description: 'GitHub API object'
     required: true
+  prompt:
+    description: "The contextual prompt you want to give to ChatGPT"
+    required: true
 outputs:
   output: # id of output
     description: 'stuff'
@@ -14,5 +17,6 @@ runs:
   using: 'docker'
   image: 'Dockerfile'
   args:
-    - ${{ inputs.url }}
     - ${{ inputs.type }}
+    - ${{ inputs.url }}
+    - ${{ inputs.prompt }}
