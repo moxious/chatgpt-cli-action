@@ -2,15 +2,17 @@
 name: 'ChatGPT CLI action'
 description: 'Use bash + ChatGPT to automate github tasks'
 inputs:
-  who-to-greet:  # id of input
-    description: 'Who to greet'
+  type: 
+    description: 'GitHub API type'
+  url:  # id of input
+    description: 'GitHub API object'
     required: true
-    default: 'World'
 outputs:
-  time: # id of output
-    description: 'The time we greeted you'
+  output: # id of output
+    description: 'stuff'
 runs:
   using: 'docker'
   image: 'Dockerfile'
   args:
-    - ${{ inputs.who-to-greet }}
+    - ${{ inputs.url }}
+    - ${{ inputs.type }}

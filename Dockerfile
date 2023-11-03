@@ -8,4 +8,4 @@ RUN apt update && apt install -y gh python3 python3-pip
 RUN pip3 install -U pip
 RUN pip3 install git+https://github.com/marcolardera/chatgpt-cli
 
-
+ENTRYPOINT ["/entrypoint.sh"]
