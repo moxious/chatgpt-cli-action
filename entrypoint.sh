@@ -10,5 +10,6 @@ gh "$TYPE" view "$URL" | tee github-context.txt
 
 echo $PROMPT > context.txt
 
-cat github-context.txt | chatgpt-cli --context context.txt | tee outputs.txt
+cat github-context.txt | chatgpt-cli --context context.txt 2>errors.txt | tee outputs.txt
 echo output=\"`cat outputs.txt`\" >> $GITHUB_OUTPUT
+echo errors=\"`cat errors.txt`\" >> $GITHUB_OUTPUT

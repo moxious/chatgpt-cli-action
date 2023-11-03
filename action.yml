@@ -13,6 +13,8 @@ inputs:
 outputs:
   output: # id of output
     description: 'stuff'
+  errors: # Error text if any
+    description: 'stuff'
 runs:
   using: 'docker'
   image: 'Dockerfile'
