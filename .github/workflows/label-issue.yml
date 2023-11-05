@@ -1,0 +1,41 @@
+on:
+    workflow_call:
+      inputs:
+        url:
+          required: true
+          type: string
+        type:
+          required: true
+          type: string
+        prompt:
+          required: true
+          type: string
+      secrets:
+        OPENAI_API_KEY:
+          required: true
+        GH_TOKEN:
+          required: true
+
+jobs:
+  label_issue:
+    runs-on: ubuntu-latest
+    name: Label Issue
+    steps:
+      # To use this repository's private action,
+      # you must check out the repository
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Test action step
+        uses: ./ # Uses an action in the root directory
+        id: label_issue
+        env:
+            OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+            GH_TOKEN: ${{ secrets.TOKEN }}
+        with:
+          url: ${{ inputs.url }}
+          type: ${{ inputs.type }}
+          prompt: ${{ inputs.prompt}}
+      - name: Output 
+        run: echo "${{ steps.label_issue.outputs.output }}"
+      - name: Errors 
+        run: echo '${{ steps.label_issue.outputs.errors }}'
