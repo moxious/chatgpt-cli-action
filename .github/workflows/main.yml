@@ -1,17 +1,17 @@
 on: [push]
 
 jobs:
-  hello_world_job:
+  test_action_job:
     runs-on: ubuntu-latest
-    name: Test job
+    name: Test Action job
     steps:
       # To use this repository's private action,
       # you must check out the repository
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Hello world action step
+      - name: Test action step
         uses: ./ # Uses an action in the root directory
-        id: hello
+        id: test_action
         env:
             OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
             GH_TOKEN: ${{ secrets.TOKEN }}
@@ -227,6 +227,6 @@ jobs:
               area/ux
               area/value-mapping
             "
-      # Use the output from the `hello` step
+      # Use the output from the `test_action` step
       - name: Get the output 
-        run: echo "Result was ${{ steps.hello.outputs.output }}"
+        run: echo "Result was ${{ steps.test_action.outputs.output }} / ERRORS ${{ steps.test_action.outputs.errors}}"
