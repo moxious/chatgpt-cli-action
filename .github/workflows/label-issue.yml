@@ -7,7 +7,7 @@ on:
         type:
           required: true
           type: string
-        prompt:
+        possible_labels:
           required: true
           type: string
       secrets:
@@ -38,13 +38,16 @@ jobs:
           type: ${{ inputs.type }}
           prompt: |
             I will give you the content of a GitHub issue. I want you to assign the
-            best possible label, or labels to the issue, choosing from the set below
+            best possible labes to the issue, choosing from the set below
             that I will provide.  I want you to output anywhere from 1 - 4 total 
             labels, separated by commas and no spaces, like this label1,label2,label3
 
+            Please emit only those labels, and no additional words or characters.
+
             Please try choose at least one area label, and at least one type label.
 
-            The legitimate labels you can choose from are ${{ inputs.prompt }}
+            Please choose labels only from this list
+            ${{ inputs.possible_labels }}
       - name: Output 
         run: echo "${{ steps.label_issue.outputs.output }}"
       - name: Errors 
