@@ -229,4 +229,4 @@ jobs:
             "
       # Use the output from the `test_action` step
       - name: Get the output 
-        run: echo "Result was ${{ steps.test_action.outputs.output }} / ERRORS ${{ steps.test_action.outputs.errors}}"
+        run: echo "Result was ${{ steps.test_action.outputs.output }} / ERRORS ${{ steps.test_action.outputs.errors }}"
