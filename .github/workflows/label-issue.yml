@@ -36,16 +36,14 @@ jobs:
         with:
           url: ${{ inputs.url }}
           type: ${{ inputs.type }}
-          prompt: "I will give you the content of a GitHub issue. I want you to assign the
+          prompt: I will give you the content of a GitHub issue. I want you to assign the
             best possible label, or labels to the issue, choosing from the set below
             that I will provide.  I want you to output anywhere from 1 - 4 total 
-            labels, separated by commas and no spaces, like this: 
-            
-            label1,label2,label3.
+            labels, separated by commas and no spaces, like this label1,label2,label3
 
             Please try choose at least one area label, and at least one type label.
 
-            The legitimate labels you can choose from are: ${{ inputs.prompt }} "
+            The legitimate labels you can choose from are ${{ inputs.prompt }}
       - name: Output 
         run: echo "${{ steps.label_issue.outputs.output }}"
       - name: Errors 
