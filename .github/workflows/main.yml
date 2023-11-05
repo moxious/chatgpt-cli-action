@@ -227,4 +227,4 @@ jobs:
       - name: Output 
         run: echo "${{ steps.test_action.outputs.output }}"
       - name: Errors 
-        run: echo "${{ steps.test_action.outputs.errors }}"
+        run: echo '${{ steps.test_action.outputs.errors }}'
