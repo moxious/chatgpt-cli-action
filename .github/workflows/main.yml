@@ -20,11 +20,16 @@ jobs:
           type: issue
           prompt: "
             I want you to help me apply the right GitHub label to an issue, and help me generate a summary of that issue.
-            Format your output exactly like this: 
+            Format your output in JSON, exactly like this: 
 
-            TYPE: (choose one of the type labels; you may choose more than one label, separate by commas)
-            AREA: (choose one of the area labels; you may choose more than one label, separate by commas)
-            SUMMARY: (no more than one paragraph
+            { 
+              "type": ["type/bug", "type/ci"],
+              "area": ["area/backend"],
+              "summary": "summary text"
+            }
+
+            You may choose more than one label for type and area, as a JSON array of strings, but only one summary
+            string.
               
             Here is the list of type labels, please choose a type label only from this list:
               type/accessibility
@@ -39,7 +44,6 @@ jobs:
               type/community
               type/debt
               type/design
-              type/designops
               type/discussion
               type/docs
               type/duplicate
@@ -58,9 +62,6 @@ jobs:
               type/roadmap
               type/tech
               type/ux
-              type/ux/cuj
-              type/ux/research
-              type/works-as-intended
 
             Here is the list of area labels, please choose an area label only from this list:
               area/admin/user
@@ -227,6 +228,7 @@ jobs:
               area/ux
               area/value-mapping
             "
-      # Use the output from the `test_action` step
-      - name: Get the output 
-        run: echo "Result was ${{ steps.test_action.outputs.output }} / ERRORS ${{ steps.test_action.outputs.errors }}"
+      - name: Output 
+        run: echo "${{ steps.test_action.outputs.output }}"
+      - name: Errors 
+        run: echo "${{ steps.test_action.outputs.errors }}"
