@@ -20,13 +20,9 @@ jobs:
           type: issue
           prompt: "
             I want you to help me apply the right GitHub label to an issue, and help me generate a summary of that issue.
-            Format your output in JSON, exactly like this: 
-
-            { 
-              "type": ["type/bug", "type/ci"],
-              "area": ["area/backend"],
-              "summary": "summary text"
-            }
+            Ensure your response is syntactically valid JSON.  Output one object with three keys, type, area, and summary.
+            The type and area keys can be JSON arrays of 1 or more choices of labels from the sets below. The summary
+            must be a single string.
 
             You may choose more than one label for type and area, as a JSON array of strings, but only one summary
             string.
