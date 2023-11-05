@@ -42,7 +42,7 @@ jobs:
             that I will provide.  I want you to output anywhere from 1 - 4 total 
             labels, separated by commas and no spaces, like this label1,label2,label3
 
-            Please emit only those labels, and no additional words or characters.
+            Please respond with only those labels, and no additional words or characters.
 
             Please try choose at least one area label, and at least one type label.
 
@@ -61,6 +61,12 @@ jobs:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
           for tag in $(echo "${{ steps.label_issue.outputs.output }}" | tr "," "\n") ; do 
+            # Despite being told not to, sometimes the LLM will emit "labels: 1,2,3"
+            # instead of "1,2,3" as output.
+            if [[ "$tag" == "labels:" ]]
+            then
+               continue
+            fi
             echo "'$tag'" ; 
             gh issue edit ${{ inputs.url }} --add-label "$tag" ;
           done
