@@ -41,3 +41,6 @@ jobs:
         run: echo "${{ steps.label_issue.outputs.output }}"
       - name: Errors 
         run: echo '${{ steps.label_issue.outputs.errors }}'
+      - name: Comment
+        run: gh ${{ inputs.type }} comment ${{ inputs.url }} -b '${{ steps.label_issue.outputs.output }}'
+  
