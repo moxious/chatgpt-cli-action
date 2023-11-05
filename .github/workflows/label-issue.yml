@@ -42,5 +42,7 @@ jobs:
       - name: Errors 
         run: echo '${{ steps.label_issue.outputs.errors }}'
       - name: Comment
+        env:
+            GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: gh ${{ inputs.type }} comment ${{ inputs.url }} -b '${{ steps.label_issue.outputs.output }}'
   
