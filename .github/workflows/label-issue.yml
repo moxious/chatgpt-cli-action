@@ -51,5 +51,5 @@ jobs:
       - name: Comment
         env:
             GH_TOKEN: ${{ secrets.GH_TOKEN }}
-        run: gh ${{ inputs.type }} comment ${{ inputs.url }} -b 'Triage bot recommends these labels: ${{ steps.label_issue.outputs.output }}'
+        run: gh ${{ inputs.type }} comment ${{ inputs.url }} -b 'Triage bot recommends these labels ${{ steps.label_issue.outputs.output }} '
   
