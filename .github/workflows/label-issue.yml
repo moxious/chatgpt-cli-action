@@ -36,7 +36,15 @@ jobs:
         with:
           url: ${{ inputs.url }}
           type: ${{ inputs.type }}
-          prompt: ${{ inputs.prompt}}
+          prompt: "
+            I will give you the content of a GitHub issue. I want you to assign the
+            best possible label, or labels to the issue, choosing from the set below
+            that I will provide.  I want you to output anywhere from 1 - 3 total 
+            labels, separated by commas and no spaces, like this: 
+            
+            label1,label2,label3.
+
+            The legitimate labels you can choose from are: ${{ inputs.prompt }}"
       - name: Output 
         run: echo "${{ steps.label_issue.outputs.output }}"
       - name: Errors 
@@ -44,5 +52,5 @@ jobs:
       - name: Comment
         env:
             GH_TOKEN: ${{ secrets.GH_TOKEN }}
-        run: gh ${{ inputs.type }} comment ${{ inputs.url }} -b '${{ steps.label_issue.outputs.output }}'
+        run: gh ${{ inputs.type }} comment ${{ inputs.url }} -b 'Triage bot recommends these labels: ${{ steps.label_issue.outputs.output }}'
   
