@@ -11,6 +11,6 @@ gh "$TYPE" view "$URL" | tee github-context.txt
 echo $PROMPT > context.txt
 
 echo "Running client to see what the robot thinks...."
-cat github-context.txt | chatgpt-cli -n -q --context context.txt 2>errors.txt | tee outputs.txt
+cat github-context.txt | chatgpt-cli -n --context context.txt 2>errors.txt | tee outputs.txt
 echo output=\"`cat outputs.txt`\" >> $GITHUB_OUTPUT
 echo errors=\"`cat errors.txt`\" >> $GITHUB_OUTPUT
