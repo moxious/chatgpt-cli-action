@@ -4,6 +4,7 @@ description: 'Use bash + ChatGPT to automate github tasks'
 inputs:
   type: 
     description: 'GitHub API type'
+    required: false
   url:  # id of input
     description: 'GitHub API object'
     required: true
