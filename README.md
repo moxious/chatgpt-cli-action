@@ -24,7 +24,6 @@ jobs:
     uses: moxious/chatgpt-cli-action/.github/workflows/label-issue.yml@main
     with:
       url: ${{ github.event.issue.html_url }}
-      type: issue
       possible_labels: |
         type/bug
         type/feature

@@ -35,7 +35,7 @@ jobs:
             GH_TOKEN: ${{ secrets.GH_TOKEN }}
         with:
           url: ${{ inputs.url }}
-          type: ${{ inputs.type }}
+          type: issue
           prompt: |
             I will give you the content of a GitHub issue. I want you to assign the
             best possible labes to the issue, choosing from the set below
