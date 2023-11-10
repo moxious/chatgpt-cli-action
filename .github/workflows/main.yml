@@ -19,14 +19,15 @@ jobs:
           url: https://github.com/grafana/grafana/issues/77598
           type: issue
           prompt: "
-            I want you to help me apply the right GitHub label to an issue, and help me generate a summary of that issue.
-            Ensure your response is syntactically valid JSON.  Output one object with three keys, type, area, and summary.
+            I want you to help me categorize a GitHub issue by applying the right GitHub label to the issue, and help me generate a summary of that issue.
+            
+            Ensure your response is syntactically valid JSON. Output one object with three keys, type, area, and summary.
             The type and area keys can be JSON arrays of 1 or more choices of labels from the sets below. The summary
             must be a single string.
 
             You may choose more than one label for type and area, as a JSON array of strings, but only one summary
-            string.
-              
+            string. In addition, if the issue contains the word 'security' or some other cyber-security related term, add the 'area/security' label always.
+            
             Here is the list of type labels, please choose a type label only from this list:
               type/accessibility
               type/angular-2-react
@@ -222,8 +223,7 @@ jobs:
               area/ui/theme
               area/units
               area/ux
-              area/value-mapping
-            "
+              area/value-mapping"
       - name: Output 
         run: echo "${{ steps.test_action.outputs.output }}"
       - name: Errors 
