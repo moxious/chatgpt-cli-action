@@ -38,14 +38,11 @@ jobs:
           labels=$(gh issue view --json labels --jq .labels[].name ${{ inputs.url }})
           if [[ "$labels" ]]; then
             echo "This issue already has labels, so we won't run the triage bot."
-            echo proceed=no >> $GITHUB_OUTPUT
-          else
-            echo proceed=yes >> $GITHUB_OUTPUT
+            exit 1
           fi          
       - name: Determine automatic labeling
         uses: ./ # Uses an action in the root directory
         id: label_issue
-        if: steps.should_run.proceed == 'yes'
         env:
             OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
             GH_TOKEN: ${{ secrets.GH_TOKEN }}
@@ -67,12 +64,10 @@ jobs:
             Please choose labels only from this list:
             ${{ inputs.possible_labels }}
       - name: Output
-        if: steps.should_run.proceed == 'yes'
         run: |
           echo '${{ steps.label_issue.outputs.output }}'
           echo '${{ steps.label_issue.outputs.errors }}'
       - name: Comment
-        if: steps.should_run.proceed == 'yes'
         env:
             GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
@@ -97,7 +92,6 @@ jobs:
 
           gh issue comment ${{ inputs.url }} --body-file $HOME/gh_comment.txt
       - name: Add labels
-        if: steps.should_run.proceed == 'yes'
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
