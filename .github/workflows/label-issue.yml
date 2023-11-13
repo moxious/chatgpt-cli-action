@@ -64,9 +64,9 @@ jobs:
             Please choose labels only from this list:
             ${{ inputs.possible_labels }}
       - name: Output 
-        run: echo "${{ steps.label_issue.outputs.output }}"
+        run: echo "${{ steps.label_issue.outputs.output }}" | tee $HOME/outputs.txt
       - name: Errors 
-        run: echo '${{ steps.label_issue.outputs.errors }}'
+        run: echo '${{ steps.label_issue.outputs.errors }}' | tee $HOME/errors.txt
       - name: Comment
         env:
             GH_TOKEN: ${{ secrets.GH_TOKEN }}
