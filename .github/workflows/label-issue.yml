@@ -50,16 +50,18 @@ jobs:
           url: ${{ inputs.url }}
           type: issue
           prompt: |
-            I want you to help me categorize a GitHub issue by applying the right GitHub label to the issue, and help me generate a summary of that issue.
+            I want you to help me categorize a GitHub issue by applying the right GitHub label to the issue, and help me 
+            generate a summary of that issue.
               
-            I want you to output anywhere from 1 - 4 total 
-            labels, separated by commas and no spaces, like this label1,label2,label3
+            I want JSON output of a single object, containing two keys, "labels", and "summary".
 
-            Please respond with only those labels, and no additional words or characters.
+            The labels key is an array of strings, 1-4 total labels.  Please try to choose at least one area label,
+            and at least one type label.
 
-            Please try choose at least one area label, and at least one type label.
+            The summary key is a short plain text summary of the issue, no more than one paragraph, 
+            preferably 1-2 sentences at maximum.
 
-            Please choose labels only from this list
+            Please choose labels only from this list:
             ${{ inputs.possible_labels }}
       - name: Output 
         run: echo "${{ steps.label_issue.outputs.output }}"
@@ -73,9 +75,8 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
-          for tag in $(echo "${{ steps.label_issue.outputs.output }}" | tr "," "\n") ; do 
-            # Despite being told not to, sometimes the LLM will emit "labels: 1,2,3"
-            # instead of "1,2,3" as output.
+          echo "${{ steps.label_issue.outputs.output }}"
+          for tag in $(echo "${{ steps.label_issue.outputs.output }}" | jq -r .labels[] ) ; do 
             if [[ "$tag" == "labels:" ]]
             then
                continue
