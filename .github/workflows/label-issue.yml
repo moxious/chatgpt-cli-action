@@ -21,6 +21,8 @@ jobs:
   label_issue:
     runs-on: ubuntu-latest
     name: Label Issue
+    permissions:
+      actions: 'write'
     steps:
       # To use this repository's private action,
       # you must check out the repository
@@ -39,6 +41,7 @@ jobs:
           if [[ "$labels" ]]; then 
             echo "This issue already has labels, so we won't run the triage bot."
             gh run cancel ${{ github.run_id }}
+            gh run watch ${{ github.run_id }}
           fi          
       - name: Determine automatic labeling
         uses: ./ # Uses an action in the root directory
