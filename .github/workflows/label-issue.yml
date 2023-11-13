@@ -70,7 +70,18 @@ jobs:
       - name: Comment
         env:
             GH_TOKEN: ${{ secrets.GH_TOKEN }}
-        run: gh issue comment ${{ inputs.url }} -b 'Triage bot recommends these labels ${{ steps.label_issue.outputs.output }} '
+        run: |
+          labels=$(cat $HOME/outputs.txt | jq -r .labels[])
+          summary=$(cat $HOME/outputs.txt | jq -r .summary)
+          
+          cat > $HOME/gh_comment.txt <<EOT
+          Triage summary: $summary
+          Recommended labels:
+
+          $labels
+          EOT
+
+          gh issue comment ${{ inputs.url }} --body-file $HOME/gh_comment.txt
       - name: Add labels
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
