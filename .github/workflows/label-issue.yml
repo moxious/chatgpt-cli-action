@@ -65,8 +65,8 @@ jobs:
             ${{ inputs.possible_labels }}
       - name: Output
         run: |
-          echo "${{ steps.label_issue.outputs.output }}" | tee $HOME/outputs.txt
-          echo '${{ steps.label_issue.outputs.errors }}' | tee $HOME/errors.txt
+          echo '${{ steps.label_issue.outputs.output }}'
+          echo '${{ steps.label_issue.outputs.errors }}'
       - name: Comment
         env:
             GH_TOKEN: ${{ secrets.GH_TOKEN }}
