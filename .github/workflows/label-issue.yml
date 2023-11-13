@@ -21,8 +21,6 @@ jobs:
   label_issue:
     runs-on: ubuntu-latest
     name: Label Issue
-    permissions:
-      actions: 'write'
     steps:
       # To use this repository's private action,
       # you must check out the repository
