@@ -30,6 +30,8 @@ jobs:
         with:
             repository: moxious/chatgpt-cli-action
       - name: Determine if this workflow needs to run
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
         id: check_run
         if: inputs.unlabeled_only
         run: |
