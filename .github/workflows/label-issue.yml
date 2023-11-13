@@ -34,9 +34,9 @@ jobs:
           url: ${{ inputs.url }}
           type: issue
           prompt: |
-            I will give you the content of a GitHub issue. I want you to assign the
-            best possible labes to the issue, choosing from the set below
-            that I will provide.  I want you to output anywhere from 1 - 4 total 
+            I want you to help me categorize a GitHub issue by applying the right GitHub label to the issue, and help me generate a summary of that issue.
+              
+            I want you to output anywhere from 1 - 4 total 
             labels, separated by commas and no spaces, like this label1,label2,label3
 
             Please respond with only those labels, and no additional words or characters.
