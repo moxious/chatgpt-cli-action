@@ -7,6 +7,10 @@ on:
         possible_labels:
           required: true
           type: string
+        unlabeled_only:
+          required: false
+          type: boolean
+          default: true
       secrets:
         OPENAI_API_KEY:
           required: true
@@ -21,9 +25,19 @@ jobs:
       # To use this repository's private action,
       # you must check out the repository
       - name: Checkout
+        id: checkout
         uses: actions/checkout@v4
         with:
             repository: moxious/chatgpt-cli-action
+      - name: Determine if this workflow needs to run
+        id: check_run
+        if: inputs.unlabeled_only
+        run: |
+          labels=$(gh issue view --json labels --jq .labels[].name ${{ inputs.url }})
+          if [[ "$labels" ]]; then 
+            echo "This issue already has labels, so we won't run the triage bot."
+            gh run cancel ${{ github.run_id }}
+          fi          
       - name: Determine automatic labeling
         uses: ./ # Uses an action in the root directory
         id: label_issue
