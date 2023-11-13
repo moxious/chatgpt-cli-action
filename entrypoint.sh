@@ -11,6 +11,9 @@ gh "$TYPE" view "$URL" | tee github-context.txt
 echo $PROMPT > context.txt
 
 echo "Running client to see what the robot thinks...."
-cat github-context.txt | chatgpt-cli -n --context context.txt 2>errors.txt | tee outputs.txt
+
+# The model in use here is important, as it is the only model as of this writing that has
+# JSON output capabilities
+cat github-context.txt | chatgpt-cli -m gpt-4-1106-preview -n --context context.txt 2>errors.txt | tee outputs.txt
 echo output=\"`cat outputs.txt`\" >> $GITHUB_OUTPUT
 echo errors=\"`cat errors.txt`\" >> $GITHUB_OUTPUT
