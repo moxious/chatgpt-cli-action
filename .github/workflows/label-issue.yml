@@ -83,8 +83,9 @@ jobs:
           summary=$(cat $HOME/outputs.txt | jq -r .summary)
           
           cat > $HOME/gh_comment.txt <<EOT
-          Triage summary: $summary
-          Recommended labels:
+          **Triage summary**: $summary
+
+          **Recommended labels**:
 
           $labels
           EOT
