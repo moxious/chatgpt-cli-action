@@ -65,8 +65,13 @@ jobs:
             ${{ inputs.possible_labels }}
       - name: Output
         run: |
-          echo '${{ steps.label_issue.outputs.output }}'
-          echo '${{ steps.label_issue.outputs.errors }}'
+          cat <<EOT
+          ${{ steps.label_issue.outputs.output }}'
+          EOT
+          echo "Errors:"
+          cat <<EOT
+          ${{ steps.label_issue.outputs.errors }}
+          EOT
       - name: Comment
         env:
             GH_TOKEN: ${{ secrets.GH_TOKEN }}
