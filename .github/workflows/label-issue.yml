@@ -75,8 +75,8 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
-          echo "${{ steps.label_issue.outputs.output }}"
-          for tag in $(echo "${{ steps.label_issue.outputs.output }}" | jq -r .labels[] ) ; do 
+          cat $HOME/outputs.txt
+          for tag in $(cat $HOME/outputs.txt | jq -r .labels[] ) ; do 
             if [[ "$tag" == "labels:" ]]
             then
                continue
