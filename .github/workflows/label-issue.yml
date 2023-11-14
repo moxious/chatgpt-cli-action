@@ -104,10 +104,10 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
-          set +x
           cat $HOME/outputs.txt
           cat $HOME/outputs.txt | jq -r .labels[] > $HOME/labels.txt
           echo "Extracted labels:"
+          cat $HOME/labels.txt
 
           while IFS= read -r tag; do 
             echo "'$tag'" ; 
