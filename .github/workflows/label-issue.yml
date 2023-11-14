@@ -61,7 +61,9 @@ jobs:
             The summary key is a short plain text summary of the issue, no more than one paragraph, 
             preferably 1-2 sentences at maximum.
 
-            Please choose labels only from this list:
+            You may choose labels only from this list. Do not emit labels that are not in this list, this would be incorrect
+            output.
+            
             ${{ inputs.possible_labels }}
       - name: Output
         run: |
