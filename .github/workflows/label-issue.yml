@@ -55,15 +55,17 @@ jobs:
               
             I want JSON output of a single object, containing two keys, "labels", and "summary".
 
-            The labels key is an array of strings, 1-4 total labels.  Please try to choose at least one area label,
-            and at least one type label.
+            The labels key should be an array of strings, 1-4 total labels.
 
-            The summary key is a short plain text summary of the issue, no more than one paragraph, 
+            The summary key should be a short plain text summary of the issue, no more than one paragraph, 
             preferably 1-2 sentences at maximum.
 
-            You may choose labels only from this list. Do not emit labels that are not in this list, this would be incorrect
-            output.
-            
+            You may choose labels only from this list below. Do not emit labels that are not in this list, this would be incorrect
+            output. Please try to choose at least one of the items below that starts with "area/" because this tells us 
+            which of our identified areas applies, and choose at least one of the items below that starts with "type/" because
+            this tells us what kind of issue it is.  
+
+            The list of labels to choose from:
             ${{ inputs.possible_labels }}
       - name: Output
         run: |
