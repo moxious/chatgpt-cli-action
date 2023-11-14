@@ -104,10 +104,21 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
+          set +x
           cat $HOME/outputs.txt
           cat $HOME/outputs.txt | jq -r .labels[] > $HOME/labels.txt
           echo "Extracted labels:"
+          
+          # Apply all labels even partially; then exit according to any failures.
+          # This allows us to detect if the LLM is hallucinating non-existing labels.
+          let failures=0
+
           while IFS= read -r tag; do 
             echo "'$tag'" ; 
-            gh issue edit ${{ inputs.url }} --add-label "$tag" ;
-          done < $HOME/labels.txt  
+            gh issue edit ${{ inputs.url }} --add-label "$tag"
+
+            if [ $0 -ne 0 ]; then
+                let failures=$failures+1
+            fi
+          done < $HOME/labels.txt
+          exit $failures
