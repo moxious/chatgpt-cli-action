@@ -63,7 +63,8 @@ jobs:
             You may choose labels only from this list below. Do not emit labels that are not in this list, this would be incorrect
             output. Please try to choose at least one of the items below that starts with "area/" because this tells us 
             which of our identified areas applies, and choose at least one of the items below that starts with "type/" because
-            this tells us what kind of issue it is.  
+            this tells us what kind of issue it is.  Never produce a label that is one or more of area, datasource, and type.
+            For example, area/datasource/X is not a valid label. area/type/X is not valid, and datasource/type/X is not valid.
 
             The list of labels to choose from:
             ${{ inputs.possible_labels }}
