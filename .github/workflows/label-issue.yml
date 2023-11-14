@@ -101,12 +101,8 @@ jobs:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
           cat $HOME/outputs.txt
-          for tag in $(cat $HOME/outputs.txt | jq -r .labels[] ) ; do 
-            if [[ "$tag" == "labels:" ]]
-            then
-               continue
-            fi
+          cat /tmp/output | jq -r .labels[] > $HOME/labels.txt
+          while IFS= read -r line; do 
             echo "'$tag'" ; 
             gh issue edit ${{ inputs.url }} --add-label "$tag" ;
-          done
-  
+          done < $HOME/labels.txt  
