@@ -102,7 +102,7 @@ jobs:
         run: |
           cat $HOME/outputs.txt
           cat $HOME/outputs.txt | jq -r .labels[] > $HOME/labels.txt
-          while IFS= read -r line; do 
+          while IFS= read -r $tag; do 
             echo "'$tag'" ; 
             gh issue edit ${{ inputs.url }} --add-label "$tag" ;
           done < $HOME/labels.txt  
