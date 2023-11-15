@@ -43,7 +43,8 @@ jobs:
 
             I want JSON output of a single object, containing two keys: 
               The "elaboration" key should contain markdown text that will be sent to the issue author
-              The "meta" key can contain any other remarks you think are relevant about the issue.
+              The "meta" key can contain a JSON object with any other remarks in the "notes" attribute you think are relevant. If
+              nothing else is relevant, still include this object with notes set to "none".
 
             In your elaboration markdown response, you can ask for more information or make any suggestions 
             on what added information would clarify the issue.  You can also ask for a reproduction of the issue, 
