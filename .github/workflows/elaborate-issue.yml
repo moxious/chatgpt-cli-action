@@ -1,0 +1,83 @@
+on:
+    workflow_call:
+      inputs:
+        url:
+          required: true
+          type: string
+      secrets:
+        OPENAI_API_KEY:
+          required: true
+        GH_TOKEN:
+          required: true
+
+jobs:
+  elaborate_issue:
+    runs-on: ubuntu-latest
+    name: Elaborate Issue
+    steps:
+      # To use this repository's private action,
+      # you must check out the repository
+      - name: Checkout
+        id: checkout
+        uses: actions/checkout@v4
+        with:
+            repository: moxious/chatgpt-cli-action
+      - name: Determine Elaboration
+        uses: ./ # Uses an action in the root directory
+        id: elaborate_issue
+        env:
+            OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+            GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        with:
+          url: ${{ inputs.url }}
+          type: issue
+          prompt: |
+            I want you to read the content of a GitHub issue that is coming from an open source community participant.
+            Sometimes, these issues don't include enough information to be actionable.  We want to help the community
+            be heard, and we want to address their issue, but in order to do that, we need to have enough information to
+            understand the causes and effects of whatever the issue is reporting.
+
+            I want you to act as a friendly and helpful guide whose purpose is to ask clarifying questions about the issue.
+            If the issue looks well elaborated and is very clear, then you should not ask any questions but simply say 
+            "Thank you for submitting a great issue!".
+
+            I want JSON output of a single object, containing two keys: 
+              The "elaboration" key should contain markdown text that will be sent to the issue author
+              The "meta" key can contain any other remarks you think are relevant about the issue.
+
+            In your elaboration markdown response, you can ask for more information or make any suggestions 
+            on what added information would clarify the issue.  You can also ask for a reproduction of the issue, 
+            or ask for a screenshot, or ask for anything else that would be helpful to a human engineer reading the issue.
+      - name: Output
+        run: |
+          cat <<EOT
+          ${{ steps.label_issue.outputs.output }}'
+          EOT
+          echo "Errors:"
+          cat <<EOT
+          ${{ steps.label_issue.outputs.errors }}
+          EOT
+      - name: Comment with Issue Elaboration
+        env:
+            GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        run: |
+          cat >$HOME/outputs.txt <<EOT
+          ${{ steps.label_issue.outputs.output }}
+          EOT
+
+          cat >$HOME/errors.txt <<EOT
+          ${{ steps.label_issue.outputs.errors }}
+          EOT
+
+          elaboration=$(cat $HOME/outputs.txt | jq -r .elaboration)
+          meta=$(cat $HOME/outputs.txt | jq -r .meta)
+          
+          cat > $HOME/gh_comment.txt <<EOT
+          **Elaboration**: 
+            
+          $elaboration
+
+          **Meta**: $meta
+          EOT
+
+          gh issue comment ${{ inputs.url }} --body-file $HOME/gh_comment.txt
