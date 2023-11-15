@@ -62,11 +62,11 @@ jobs:
             GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
           cat >$HOME/outputs.txt <<EOT
-          ${{ steps.label_issue.outputs.output }}
+          ${{ steps.elaborate_issue.outputs.output }}
           EOT
 
           cat >$HOME/errors.txt <<EOT
-          ${{ steps.label_issue.outputs.errors }}
+          ${{ steps.elaborate_issue.outputs.errors }}
           EOT
 
           elaboration=$(cat $HOME/outputs.txt | jq -r .elaboration)
