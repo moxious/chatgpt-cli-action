@@ -51,11 +51,11 @@ jobs:
       - name: Output
         run: |
           cat <<EOT
-          ${{ steps.label_issue.outputs.output }}'
+          ${{ steps.elaborate_issue.outputs.output }}'
           EOT
           echo "Errors:"
           cat <<EOT
-          ${{ steps.label_issue.outputs.errors }}
+          ${{ steps.elaborate_issue.outputs.errors }}
           EOT
       - name: Comment with Issue Elaboration
         env:
@@ -77,7 +77,10 @@ jobs:
             
           $elaboration
 
-          **Meta**: $meta
+          **Meta**: 
+          ```json
+          $meta
+          ```
           EOT
 
           gh issue comment ${{ inputs.url }} --body-file $HOME/gh_comment.txt
