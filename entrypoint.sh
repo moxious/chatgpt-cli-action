@@ -14,7 +14,7 @@ echo "Running client to see what the robot thinks...."
 
 # The model in use here is important, as it is the only model as of this writing that has
 # JSON output capabilities
-which chatgpt-cli
+find / -name "chatgpt-cli*" 
 cat github-context.txt | chatgpt-cli -m gpt-4-1106-preview --json -n --context context.txt 2>$HOME/errors.txt | tee $HOME/outputs.txt
 echo output=`cat $HOME/outputs.txt` >> $GITHUB_OUTPUT
 echo errors=`cat $HOME/errors.txt` >> $GITHUB_OUTPUT
