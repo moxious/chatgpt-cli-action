@@ -1,0 +1,81 @@
+on:
+    workflow_call:
+      inputs:
+        url:
+          required: true
+          type: string
+        prompt:
+          required: true
+          type: string
+      secrets:
+        OPENAI_API_KEY:
+          required: true
+        GH_TOKEN:
+          required: true
+
+jobs:
+  comment_issue:
+    runs-on: ubuntu-latest
+    name: Generic Issue Smart Commenter
+    steps:
+      # To use this repository's private action,
+      # you must check out the repository
+      - name: Checkout
+        id: checkout
+        uses: actions/checkout@v4
+        with:
+            repository: moxious/chatgpt-cli-action
+      - name: Determine Smart Comment
+        uses: ./ # Uses an action in the root directory
+        id: comment_issue
+        env:
+            OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+            GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        with:
+          url: ${{ inputs.url }}
+          type: issue
+          prompt: |
+            You are a helpful GitHub assistant whose job it is to make useful comments on issues.  
+            
+            I want you to read the content of a GitHub issue that is coming from an open source community participant.
+            
+            I want you to output JSON of a single object, containing two keys:
+                the "comment" key should contain markdown text that will be added as a comment on the issue.
+                the "meta" key should contain any other remarks or "notes" you think are relevant. 
+                If nothing else is relevant, still include this object with notes set to "none".
+
+            ${{ inputs.prompt }}
+      - name: Output
+        run: |
+          cat <<EOT
+          ${{ steps.comment_issue.outputs.output }}'
+          EOT
+          echo "Errors:"
+          cat <<EOT
+          ${{ steps.comment_issue.outputs.errors }}
+          EOT
+      - name: Comment with Issue Elaboration
+        env:
+            GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        run: |
+          cat >$HOME/outputs.txt <<EOT
+          ${{ steps.comment_issue.outputs.output }}
+          EOT
+
+          cat >$HOME/errors.txt <<EOT
+          ${{ steps.comment_issue.outputs.errors }}
+          EOT
+
+          comment=$(cat $HOME/outputs.txt | jq -r .comment)
+          meta=$(cat $HOME/outputs.txt | jq -r .meta)
+          
+          cat > $HOME/gh_comment.txt <<EOT
+          $comment
+
+          **Meta**: 
+          ```json
+          $meta
+          ```
+          EOT
+
+          gh issue comment ${{ inputs.url }} --body-file $HOME/gh_comment.txt
