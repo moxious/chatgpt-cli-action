@@ -7,7 +7,7 @@ RUN echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/g
 RUN apt update && apt install -y gh python3 python3-pip jq
 RUN pip3 install -U pip
 COPY entrypoint.sh /entrypoint.sh
-RUN pip3 install git+https://github.com/moxious/chatgpt-cli
+RUN pip3 install git+https://github.com/moxious/chatgpt-cli@fix
 
 RUN chmod +x /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
