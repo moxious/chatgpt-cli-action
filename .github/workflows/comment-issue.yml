@@ -7,6 +7,14 @@ on:
         prompt:
           required: true
           type: string
+        comment_prefix:
+          required: false
+          type: string
+          default: ""
+        comment_postfix:
+          required: false
+          type: string
+          default: ""
       secrets:
         OPENAI_API_KEY:
           required: true
@@ -70,12 +78,17 @@ jobs:
           meta=$(cat $HOME/outputs.txt | jq -r .meta)
           
           cat > $HOME/gh_comment.txt <<EOT
+
+          ${{ inputs.comment_prefix }}
+
           $comment
 
           **Meta**: 
           ```json
           $meta
           ```
+
+          ${{ inputs.comment_postfix }}
           EOT
 
           gh issue comment ${{ inputs.url }} --body-file $HOME/gh_comment.txt
