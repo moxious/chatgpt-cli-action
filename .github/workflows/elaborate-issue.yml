@@ -41,10 +41,8 @@ jobs:
             If the issue looks well elaborated and is very clear, then you should not ask any questions but simply say 
             "Thank you for submitting a great issue!".
 
-            I want JSON output of a single object, containing two keys: 
+            I want JSON output of a single object, containing one key: 
               The "elaboration" key should contain markdown text that will be sent to the issue author
-              The "meta" key can contain a JSON object with any other remarks in the "notes" attribute you think are relevant. If
-              nothing else is relevant, still include this object with notes set to "none".
 
             In your elaboration markdown response, you can ask for more information or make any suggestions 
             on what added information would clarify the issue.  You can also ask for a reproduction of the issue, 
@@ -52,7 +50,7 @@ jobs:
       - name: Output
         run: |
           cat <<EOT
-          ${{ steps.elaborate_issue.outputs.output }}'
+          ${{ steps.elaborate_issue.outputs.output }}
           EOT
           echo "Errors:"
           cat <<EOT
@@ -71,16 +69,11 @@ jobs:
           EOT
 
           elaboration=$(cat $HOME/outputs.txt | jq -r .elaboration)
-          meta=$(cat $HOME/outputs.txt | jq -r .meta)
           
           cat > $HOME/gh_comment.txt <<EOT
           **Elaboration**: 
             
           $elaboration
-
-          **Meta**: 
-          ```json
-          $meta
           ```
           EOT
 
