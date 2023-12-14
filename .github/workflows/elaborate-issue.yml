@@ -74,7 +74,6 @@ jobs:
           **Elaboration**: 
             
           $elaboration
-          ```
           EOT
 
           gh issue comment ${{ inputs.url }} --body-file $HOME/gh_comment.txt
