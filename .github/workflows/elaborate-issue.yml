@@ -68,7 +68,9 @@ jobs:
           ${{ steps.elaborate_issue.outputs.errors }}
           EOT
 
-          echo '**Elaboration**:\n\n' > $HOME/gh_comment.txt
+          echo '**Elaboration**:' > $HOME/gh_comment.txt
+          echo "" >> $HOME/gh_comment.txt
+          echo "" >> $HOME/gh_comment.txt
           cat $HOME/outputs.txt | jq -r .elaboration >> $HOME/gh_comment.txt
 
           gh issue comment ${{ inputs.url }} --body-file $HOME/gh_comment.txt

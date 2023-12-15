@@ -85,7 +85,8 @@ jobs:
 
           # Content
           cat $HOME/outputs.txt | jq -r .comment >> $HOME/gh_comment.txt
-          echo "\n\n" >> $HOME/gh_comment.txt
+          echo "" >> $HOME/gh_comment.txt
+          echo "" >> $HOME/gh_comment.txt
           
           # Postfix
           cat >>$HOME/gh_comment.txt <<'EOT'
