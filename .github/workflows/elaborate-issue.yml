@@ -68,12 +68,7 @@ jobs:
           ${{ steps.elaborate_issue.outputs.errors }}
           EOT
 
-          elaboration=$(cat $HOME/outputs.txt | jq -r .elaboration)
-          
-          cat > $HOME/gh_comment.txt <<'EOT'
-          **Elaboration**: 
-            
-          $elaboration
-          EOT
+          echo '**Elaboration**:\n\n' > $HOME/gh_comment.txt
+          cat $HOME/outputs.txt | jq -r .elaboration >> $HOME/gh_comment.txt
 
           gh issue comment ${{ inputs.url }} --body-file $HOME/gh_comment.txt

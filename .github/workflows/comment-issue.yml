@@ -75,20 +75,21 @@ jobs:
           EOT
 
           comment=$(cat $HOME/outputs.txt | jq -r .comment)
-          meta=$(cat $HOME/outputs.txt | jq -r .meta)
-          
+          meta=$(cat $HOME/outputs.txt | jq -r .meta)       
+
+          # Build the comment file
+          # Prefix
           cat > $HOME/gh_comment.txt <<'EOT'
-
           ${{ inputs.comment_prefix }}
+          EOT
 
-          $comment
-
-          **Meta**: 
-          ```json
-          $meta
-          ```
-
-          ${{ inputs.comment_postfix }}
+          # Content
+          cat $HOME/outputs.txt | jq -r .comment >> $HOME/gh_comment.txt
+          echo "\n\n" >> $HOME/gh_comment.txt
+          
+          # Postfix
+          cat >>$HOME/gh_comment.txt <<'EOT'
+          ${{ inputs.comment_postfix}}
           EOT
 
           gh issue comment ${{ inputs.url }} --body-file $HOME/gh_comment.txt
