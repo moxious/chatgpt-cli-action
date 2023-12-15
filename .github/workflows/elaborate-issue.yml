@@ -49,28 +49,28 @@ jobs:
             or ask for a screenshot, or ask for anything else that would be helpful to a human engineer reading the issue.
       - name: Output
         run: |
-          cat <<EOT
+          cat <<'EOT'
           ${{ steps.elaborate_issue.outputs.output }}
           EOT
           echo "Errors:"
-          cat <<EOT
+          cat <<'EOT'
           ${{ steps.elaborate_issue.outputs.errors }}
           EOT
       - name: Comment with Issue Elaboration
         env:
             GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
-          cat >$HOME/outputs.txt <<EOT
+          cat >$HOME/outputs.txt <<'EOT'
           ${{ steps.elaborate_issue.outputs.output }}
           EOT
 
-          cat >$HOME/errors.txt <<EOT
+          cat >$HOME/errors.txt <<'EOT'
           ${{ steps.elaborate_issue.outputs.errors }}
           EOT
 
           elaboration=$(cat $HOME/outputs.txt | jq -r .elaboration)
           
-          cat > $HOME/gh_comment.txt <<EOT
+          cat > $HOME/gh_comment.txt <<'EOT'
           **Elaboration**: 
             
           $elaboration

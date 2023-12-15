@@ -70,22 +70,22 @@ jobs:
             ${{ inputs.possible_labels }}
       - name: Output
         run: |
-          cat <<EOT
+          cat <<'EOT'
           ${{ steps.label_issue.outputs.output }}'
           EOT
           echo "Errors:"
-          cat <<EOT
+          cat <<'EOT'
           ${{ steps.label_issue.outputs.errors }}
           EOT
       - name: Comment
         env:
             GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
-          cat >$HOME/outputs.txt <<EOT
+          cat >$HOME/outputs.txt <<'EOT'
           ${{ steps.label_issue.outputs.output }}
           EOT
 
-          cat >$HOME/errors.txt <<EOT
+          cat >$HOME/errors.txt <<'EOT'
           ${{ steps.label_issue.outputs.errors }}
           EOT
 
