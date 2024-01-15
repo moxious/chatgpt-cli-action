@@ -1,0 +1,67 @@
+on:
+    workflow_call:
+      inputs:
+        url:
+          required: true
+          type: string
+      secrets:
+        OPENAI_API_KEY:
+          required: true
+        GH_TOKEN:
+          required: true
+jobs:
+  label_issue:
+    runs-on: ubuntu-latest
+    name: Label Issue
+    steps:
+      # To use this repository's private action,
+      # you must check out the repository
+      - name: Checkout
+        id: checkout
+        uses: actions/checkout@v4
+        with:
+            repository: moxious/chatgpt-cli-action
+      - name: Summarize
+        uses: ./ # Uses an action in the root directory
+        id: summarize_issue
+        env:
+            OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+            GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        with:
+          url: ${{ inputs.url }}
+          type: issue
+          prompt: |
+            I want you to help me summarize a GitHub issue.
+              
+            I want JSON output of a single object, containing one key, "summary".
+
+            The summary key should be a short plain text summary of the issue, no more than one paragraph, 
+            preferably 1-2 sentences at maximum.
+      - name: Output
+        run: |
+          cat <<'EOT'
+          ${{ steps.label_issue.outputs.output }}'
+          EOT
+          echo "Errors:"
+          cat <<'EOT'
+          ${{ steps.label_issue.outputs.errors }}
+          EOT
+      - name: Comment
+        env:
+            GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        run: |
+          cat >$HOME/outputs.txt <<'EOT'
+          ${{ steps.label_issue.outputs.output }}
+          EOT
+
+          cat >$HOME/errors.txt <<'EOT'
+          ${{ steps.label_issue.outputs.errors }}
+          EOT
+
+          summary=$(cat $HOME/outputs.txt | jq -r .summary)
+          
+          cat > $HOME/gh_comment.txt <<EOT
+          **Summary**: $summary
+          EOT
+
+          gh issue comment ${{ inputs.url }} --body-file $HOME/gh_comment.txt
