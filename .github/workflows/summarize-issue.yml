@@ -10,7 +10,7 @@ on:
         GH_TOKEN:
           required: true
 jobs:
-  label_issue:
+  summarize_issue:
     runs-on: ubuntu-latest
     name: Label Issue
     steps:
@@ -40,22 +40,22 @@ jobs:
       - name: Output
         run: |
           cat <<'EOT'
-          ${{ steps.label_issue.outputs.output }}'
+          ${{ steps.summarize_issue.outputs.output }}'
           EOT
           echo "Errors:"
           cat <<'EOT'
-          ${{ steps.label_issue.outputs.errors }}
+          ${{ steps.summarize_issue.outputs.errors }}
           EOT
       - name: Comment
         env:
             GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
           cat >$HOME/outputs.txt <<'EOT'
-          ${{ steps.label_issue.outputs.output }}
+          ${{ steps.summarize_issue.outputs.output }}
           EOT
 
           cat >$HOME/errors.txt <<'EOT'
-          ${{ steps.label_issue.outputs.errors }}
+          ${{ steps.summarize_issue.outputs.errors }}
           EOT
 
           summary=$(cat $HOME/outputs.txt | jq -r .summary)
