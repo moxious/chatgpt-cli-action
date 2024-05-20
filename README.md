@@ -44,6 +44,25 @@ jobs:
       GH_TOKEN: ${{ secrets.TOKEN }}
 ```
 
+## Worked Example: Elaborate a GitHub issue, ask the user to add details
+
+This will only comment on the issue:
+
+```
+on:
+  issues:
+    types:
+      - opened
+
+jobs:
+  elaborate_issue:
+    uses: moxious/chatgpt-cli-action/.github/workflows/elaborate-issue.yml@main
+    with:
+      url: ${{ github.event.issue.html_url }}
+    secrets:
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      GH_TOKEN: ${{ secrets.TOKEN }}
+
 # General Inputs
 
 ## Inputs
